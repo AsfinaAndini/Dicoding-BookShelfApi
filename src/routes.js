@@ -31,7 +31,7 @@ const routes = [
     },
     
     {
-        method: 'DELETE',
+        method: 'DELETES',
         path: '/books/{bookId}',
         handler: deleteItemByIdHandler,
     },
