@@ -80,4 +80,84 @@ const addItemHandler = (request, h) => {
 
 };
 
-module.exports = { addItemHandler };
+const getAllItemsHandler = (request, h) => {
+    const { name, reading, finished } = request.query;
+    // query name
+    if (name) {
+        const filteredBooksName = items.filter((book) => {
+            const nameRegex = new RegExp(name, 'gi');
+            return nameRegex.test(book.name);
+        });
+
+        const response = h
+            .response({
+                status: 'success',
+                data: {
+                    books: filteredBooksName.map((book) => ({
+                        id: book.id,
+                        name: book.name,
+                        publisher: book.publisher,
+                    })),
+                },
+            })
+            .code(200); return response;
+    }// query reading
+    if (reading) {
+        const filteredBooksReading = items.filter(
+            (book) => Number(book.reading) === Number(reading),
+        ); const response = h
+            .response({
+                status: 'success',
+                data: {
+                    book: filteredBooksReading.map((book) => ({
+                        id: book.id,
+                        name: book.name,
+                        publisher: book.publisher,
+                    })),
+                },
+            })
+            .code(200); return response;
+    }// query finished
+    if (finished) {
+        const filteredBooksFinished = items.filter(
+            (book) => Number(book.finished) === Number(finished),
+        ); const response = h
+            .response({
+                status: 'success',
+                data: {
+                    books: filteredBooksFinished.map((book) => ({
+                        id: book.id,
+                        name: book.name,
+                        publisher: book.publisher,
+                    })),
+                },
+            })
+            .code(200); return response;
+    }
+    const response = h
+        .response({
+            status: 'success',
+            data: {
+                books: items.map((book) => ({
+                    id: book.id,
+                    name: book.name,
+                    publisher: book.publisher,
+                })),
+            },
+        })
+        .code(200); return response;
+}
+
+const getItemByIdHandler = (request, h) => { }
+
+const editItemByIdHandler = (request, h) => { }
+
+const deleteItemByIdHandler = (request, h) => { }
+
+module.exports = {
+    addItemHandler,
+    getAllItemsHandler,
+    getItemByIdHandler,
+    editItemByIdHandler,
+    deleteItemByIdHandler,
+};
