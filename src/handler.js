@@ -172,7 +172,80 @@ const getItemByIdHandler = (request, h) => {
     return response;
 };
 
-const editItemByIdHandler = (request, h) => { }
+const editItemByIdHandler = (request, h) => {
+    const { bookId } = request.params; const {
+        name,
+        year,
+        author,
+        summary,
+        publisher,
+        pageCount,
+        readPage,
+        reading,
+    } = request.payload;
+    
+    // apabila properti name tidak terisi pada request body
+    if (!name) {
+        const response = h
+            .response({
+                status: 'fail',
+                message: 'Gagal memperbarui buku. Mohon isi nama buku',
+            })
+            .code(400);
+        return response;
+    }
+    
+    // jika value readPage lebih besar dari pageCount 
+    if (readPage > pageCount) {
+        const response = h
+            .response({
+                status: 'fail',
+                message:
+                    'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount',
+            })
+            .code(400);
+        return response;
+    } 
+    
+    const finished = pageCount === readPage;
+    const updatedAt = new Date().toISOString(); 
+    
+    const index = items.findIndex((book) => book.id === bookId);
+    
+    // jika id book yang dicari ada
+    if (index !== -1) {
+        items[index] = {
+            ...items[index],
+            name,
+            year,
+            author,
+            summary,
+            publisher,
+            pageCount,
+            readPage,
+            reading,
+            finished,
+            updatedAt,
+        }; 
+        
+        const response = h
+            .response({
+                status: 'success',
+                message: 'Buku berhasil diperbarui',
+            })
+            .code(200);
+        return response;
+    }
+    
+    // Jika book dengan id yang dicari tidak ditemukan
+    const response = h
+        .response({
+            status: 'fail',
+            message: 'Gagal memperbarui buku. Id tidak ditemukan',
+        })
+        .code(404);
+    return response;
+};
 
 const deleteItemByIdHandler = (request, h) => { }
 
