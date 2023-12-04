@@ -1,6 +1,6 @@
 const { addItemHandler,
         getAllItemsHandler, 
-        getItemByIdHandler,
+        getDetailItemByIdHandler,
         editItemByIdHandler,
         deleteItemByIdHandler, 
     } = require('./handler');
@@ -21,7 +21,7 @@ const routes = [
     {
         method: 'GET',
         path: '/books/{bookId}',
-        handler: getItemByIdHandler,
+        handler: getDetailItemByIdHandler,
     },
     
     {
@@ -36,11 +36,6 @@ const routes = [
         handler: deleteItemByIdHandler,
     },
     
-    {
-        method: '*',
-        path: '/{any*}',
-        handler: () => 'Halaman tidak ditemukan',
-    },
 ];
 
 module.exports = routes;
